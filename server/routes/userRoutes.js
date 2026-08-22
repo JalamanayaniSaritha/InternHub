@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 const router = express.Router();
 
@@ -14,14 +15,44 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const user = new User(req.body);
+        const { name, email, password, role } = req.body;
+
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(400).json({
+                message: "User already exists"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = new User({
+            name,
+            email,
+            password: hashedPassword,
+            role
+        });
+
         const savedUser = await user.save();
 
-        res.status(201).json(savedUser);
+        res.status(201).json({
+            message: "User registered successfully",
+            user: {
+                id: savedUser._id,
+                name: savedUser.name,
+                email: savedUser.email,
+                role: savedUser.role
+            }
+        });
+
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({
+            message: error.message
+        });
     }
 });
+
 router.delete("/:id", async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
@@ -41,4 +72,5 @@ router.delete("/:id", async (req, res) => {
         });
     }
 });
+
 module.exports = router;
