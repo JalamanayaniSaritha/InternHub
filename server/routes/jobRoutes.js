@@ -29,5 +29,30 @@ router.post("/", async (req, res) => {
         });
     }
 });
+router.put("/:id", async (req, res) => {
+    try {
+        const updatedJob = await Job.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedJob) {
+            return res.status(404).json({
+                message: "Job/Internship not found"
+            });
+        }
+
+        res.json({
+            message: "Job/Internship updated successfully",
+            job: updatedJob
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+});
 
 module.exports = router;
