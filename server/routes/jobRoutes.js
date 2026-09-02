@@ -55,4 +55,23 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+router.get("/:id", async (req, res) => {
+    try {
+        const job = await Job.findById(req.params.id);
+
+        if (!job) {
+            return res.status(404).json({
+                message: "Job/Internship not found"
+            });
+        }
+
+        res.json(job);
+
+    } catch (error) {
+        res.status(400).json({
+            message: "Invalid job ID"
+        });
+    }
+}); 
+
 module.exports = router;
