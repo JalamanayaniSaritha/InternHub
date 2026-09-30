@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import "./JobDetails.css";
 
 function JobDetails() {
     const { id } = useParams();
@@ -22,34 +23,52 @@ function JobDetails() {
     }
 
     return (
-        <div>
-            <h1>{job.title}</h1>
+        <div className="details-page">
 
-            <h2>{job.company}</h2>
+            <Link to="/" className="back-link">
+                ← Back to Jobs
+            </Link>
 
-            <p>📍 {job.location}</p>
+            <div className="details-card">
 
-            <p>💼 {job.type}</p>
+                <div className="details-header">
+                    <div className="details-logo">
+                        {job.company.charAt(0).toUpperCase()}
+                    </div>
 
-            <p>💰 {job.salary}</p>
+                    <div>
+                        <h1>{job.title}</h1>
+                        <h2>{job.company}</h2>
+                    </div>
+                </div>
 
-            <h3>Skills</h3>
+                <div className="details-info">
+                    <span>📍 {job.location}</span>
+                    <span>💼 {job.type}</span>
+                    <span>💰 {job.salary || "Not specified"}</span>
+                </div>
 
-            {job.skills.map((skill, index) => (
-                <span key={index}> {skill} </span>
-            ))}
+                <h3>Job Description</h3>
+                <p>{job.description}</p>
 
-            <h3>Description</h3>
+                <h3>Required Skills</h3>
 
-            <p>{job.description}</p>
+                <div className="details-skills">
+                    {job.skills.map((skill, index) => (
+                        <span key={index}>{skill}</span>
+                    ))}
+                </div>
 
-            <a
-                href={job.applyLink}
-                target="_blank"
-                rel="noreferrer"
-            >
-                Apply Now →
-            </a>
+                <a
+                    className="details-apply"
+                    href={job.applyLink}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Apply Now →
+                </a>
+
+            </div>
         </div>
     );
 }
