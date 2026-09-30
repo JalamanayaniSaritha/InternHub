@@ -92,6 +92,12 @@ function Jobs() {
                                         </span>
                                     ))}
                                 </div>
+                                <a
+    className="apply-btn"
+    href={`/job/${job._id}`}
+>
+    View Details →
+</a>
 
                                 <a
                                     className="apply-btn"
