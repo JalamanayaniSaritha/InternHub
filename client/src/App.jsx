@@ -1,3 +1,4 @@
+import Register from "./pages/Register";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Jobs from "./pages/Jobs";
 import JobDetails from "./pages/JobDetails";
@@ -11,6 +12,7 @@ function App() {
                 <Route path="/" element={<Jobs />} />
                 <Route path="/job/:id" element={<JobDetails />} />
                 <Route path="/add-job" element={<AddJob />} />
+                <Route path="/register" element={<Register />} />
             </Routes>
         </BrowserRouter>
     );
